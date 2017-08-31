@@ -3,6 +3,22 @@
 }
 
 .tableWrapper {
-  max-height: 400px;
+  max-height: 600px;
   overflow: auto;
+}
+
+.card{
+  min-height: 600px;
+  color: black;
+}
+
+.tableWrapper{
+  color: black;
+}
+
+h2{
+  margin: 0px;
+}
+h1{
+  color: black;
 }
