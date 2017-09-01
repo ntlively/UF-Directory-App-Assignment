@@ -1,7 +1,12 @@
 #searchBar {
   margin: 15px 10px;
 }
-
+#editButton{
+  height: 34px;
+}
+#collapseCard{
+  min-height: 100px
+}
 .tableWrapper {
   max-height: 600px;
   overflow: auto;
@@ -12,13 +17,28 @@
   color: black;
 }
 
+.modal{
+  color: black;
+}
+
 .tableWrapper{
   color: black;
+}
+
+.collapse {
+  transition: height 4.0s;
 }
 
 h2{
   margin: 0px;
 }
 h1{
-  color: black;
+  color: rgb(0, 0, 0);
+  margin: 15px;
+}
+pre{
+  margin: 0 0 0px;
+}
+ table, th, td, tr{
+  border: 5px solid white;
 }

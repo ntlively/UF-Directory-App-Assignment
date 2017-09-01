@@ -8,11 +8,11 @@
   <body ng-app="directoryApp" class="bg-info">
     <div class="container">
       <div class="row">
-        <h1><b>UF Directory App</b></h1>
+        <h1 class ="text-center"><b>UF Directory App</b></h1>
       </div>
-      <div class="row" ng-controller="ListingsController">
+      <div class="row col-md-12" ng-controller="ListingsController">
 <!-- modal -->
-<div class="modal">
+<div class="modal" id="hello_modal">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -21,61 +21,90 @@
         <div class="modal-body">
           <p class = "text-primary lead">Welcome to the University of Florida Directory Search App!<br><br>
             <span class="glyphicon glyphicon-minus"></span> Search any directory listing by name or building code.<br>
-            <span class="glyphicon glyphicon-minus"></span> Click a listing for more info.</p>
-        </div>
+            <span class="glyphicon glyphicon-minus"></span> Click a listing for more info.<br>
+            <span class="glyphicon glyphicon-minus"></span> Click a 'Edit Directory' to add or remove a listing.</p>
+          </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary btn-block" data-dismiss="modal">Give It A Try!</button>
         </div>
       </div>
     </div>
   </div>
-
   <!-- end modal -->
-
-       <div class="col-md-6">
-          <div class="input-group" id="searchBar">
+  <!-- info modal -->
+<div class="modal" id="info_modal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title text-primary text-center"><b>Detailed Information</b></h2>
+        </div>
+        <div class="modal-body">
+            <ul class ="list-group">
+                <li class ="list-group-item">Building Code   :  {{currentDetails.code || "Unknown"}}</li>
+                <li class ="list-group-item">Building Name   :  {{currentDetails.name || "Unknown"}}</li>
+                <li class ="list-group-item">Building Address:  {{currentDetails.address || "Unknown"}}</li>
+                <li class ="list-group-item">Latitude        :  {{currentDetails.coordinates.latitude || "Unknown"}}</li>
+                <li class ="list-group-item">Longitude       :  {{currentDetails.coordinates.longitude || "Unknown"}}</li>
+              </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary btn-block" data-dismiss="modal">Dismiss</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end modal -->
+          <div class="input-group col-md-12" id="searchBar">
             <span class="input-group-addon" id="sizing-addon1"><span class="glyphicon glyphicon-search"></span></span>
             <input type="text" class="form-control" placeholder="Search" ng-model="searchTerm">
+            <span class="input-group-btn">
+                <span class="input-group-addon" id = "editButton" role="button"ng-click="editDirectory()"data-toggle="collapse" data-target=".collapse"><b>Edit Directory</b></span>
+            </span>
+          
           </div>
+          <div class="col-md-12">
+              <div class="collapse" id="collapseForm">
+                <div class="card card-body" id="collapseCard">
+                    <table class="table">
+                        <thead>
+                          <tr>
+                            <th>Code</th>         
+                            <th>Building Name</th>
+                            <th>Latitude</th>
+                            <th>Longitude</th>
+                            <th>Address</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td><input class="form-control" ng-model="listing.code"></td>
+                            <td><input class="form-control" ng-model="listing.name"></td>
+                            <td><input class="form-control" ng-model="listing.coordinates.latitude"></td>
+                            <td><input class="form-control" ng-model="listing.coordinates.longitude"></td>
+                            <td><input class="form-control" ng-model="listing.address"></td>
+                            <td><button class="btn btn-primary" ng-click="addListing()">Add Contact</button></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                </div>
+              </div>
+
+
+
           <div class="tableWrapper">
-            <table class="table table-bordered table-hover">
+            <table class="table table-hover">
               <tr>
                 <th>Code</th>
                 <th>Building Name</th>
-
+                <th></th>
               </tr>
 
-              <tr ng-repeat="building in listings | regex:['name','code']: this" ng-click="showDetails(building)">   
-                <td role="button">{{ building.code }}</td>
-                <td role="button">{{ building.name }}</td> 
+              <tr ng-repeat="building in listings | regex:['name','code']: this">   
+                <td role="button" ng-click="showDetails(building)"><pre><b>{{ building.code }}</b></pre></td>
+                <td role="button" ng-click="showDetails(building)"><pre><b>{{ building.name }}</b></pre></td>
+                <td class="text-center" ng-click="deleteListing(building)"><div class="collapse"><button class="btn btn-danger" ng-click="deleteListing(building)">Remove</button></div></td>
               </tr>
-              <!-- 
-
-                  Fill in the rest of the table:
-                      * populate the rows with the code and name of each listing
-                      * include a way to remove individual listings
-
-                --> 
             </table>
-          </div>
-          <!-- 
-
-              Write an HTML form that adds new listings to the directory 
-
-            -->
-        </div>
-        <div class="col-md-6">
-          <div class="card">
-            <h2 class ="text-center card-header">Detailed Information</h2>
-            <div class="card-body">
-              <ul class ="list-group">
-            <li class ="list-group-item">Building Name   :  {{currentDetails.name || "Unknown"}}</li>
-            <li class ="list-group-item">Building Code   :  {{currentDetails.code || "Unknown"}}</li>
-            <li class ="list-group-item">Building Address:  {{currentDetails.address || "Unknown"}}</li>
-            <li class ="list-group-item">Latitude        :  {{currentDetails.coordinates.latitude || "Unknown"}}</li>
-            <li class ="list-group-item">Longitude       :  {{currentDetails.coordinates.longitude || "Unknown"}}</li>
-              </ul>
-            </div>
           </div>
         </div>
       </div>
@@ -88,7 +117,7 @@
     <script src="listingFactory.js"></script>
     <script type="text/javascript">
       $(document).on('ready',function(){
-          $('.modal').modal('toggle');
+          $('#hello_modal').modal('toggle');
       });
   </script>
   </body>

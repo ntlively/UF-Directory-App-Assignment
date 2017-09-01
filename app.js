@@ -5,7 +5,7 @@ angular.module('listings', []);
 var app = angular.module('directoryApp', ['listings']);
 
 //https://stackoverflow.com/questions/12046928/how-to-use-regex-with-ng-repeat-in-angularjs
-//substantially modified to work with the search term and with a set regular expression
+//Custom filter,substantially modified to work with the search term and with a set regular expression
 app.filter('regex', function() {
     return function(input, field, scope) {
         if(scope.searchTerm != ''){
