@@ -99,7 +99,7 @@
                 <th></th>
               </tr>
 
-              <tr ng-repeat="building in listings | regex:['name','code']: this">   
+              <tr ng-repeat="building in listings | orderBy:'code' | regex:['name','code']: this">   
                 <td role="button" ng-click="showDetails(building)"><pre><b>{{ building.code }}</b></pre></td>
                 <td role="button" ng-click="showDetails(building)"><pre><b>{{ building.name }}</b></pre></td>
                 <td class="text-center" ng-click="deleteListing(building)"><div class="collapse"><button class="btn btn-danger" ng-click="deleteListing(building)">Remove</button></div></td>
